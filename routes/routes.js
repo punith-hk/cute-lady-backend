@@ -2,9 +2,11 @@ const express = require("express");
 
 const collections = require('../models/collections');
 
+const checkAuth = require("../middleware/check-auth");
+
 const router = express.Router();
 
-router.post("/indian/addNew", (req, res, next) => {
+router.post("/indian/addNew", checkAuth, (req, res, next) => {
     const collection = new collections({
         category: req.body.category,
         type: req.body.type,
@@ -17,7 +19,7 @@ router.post("/indian/addNew", (req, res, next) => {
     });
 });
 
-router.put("/updateCollection/:id", (req, res, next) => {
+router.put("/updateCollection/:id", checkAuth, (req, res, next) => {
     const collection = new collections({
         type: req.body.type,
         title: req.body.title
@@ -60,7 +62,7 @@ router.get("/getDressDetails", (req, res, next) => {
         });
 });
 
-router.delete("/deleteDressDetailsByID/:id", (req, res, next) => {
+router.delete("/deleteDressDetailsByID/:id", checkAuth, (req, res, next) => {
     collections.deleteOne({ _id: req.params.id }).then(result => {
         res.status(200).json({ message: "data deleted successfully" });
     });
