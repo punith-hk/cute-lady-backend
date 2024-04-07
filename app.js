@@ -1,17 +1,15 @@
-const http = require('http');
-
 const express = require('express');
 
 const bodyParser = require('body-parser');
 
 const app = express();
 
-const routes = require("./routes/routes");
-const userRoutes = require("./routes/auth");
+const routes = require("./routes/collection");
+const userRoutes = require("./routes/user");
 
 const mongoose = require('mongoose');
 
-const uri = "mongodb+srv://puneeth:Punith%401903.@cluster0.537wsyw.mongodb.net/node-angular?retryWrites=true&w=majority";
+const uri = "mongodb+srv://puneeth:" + process.env.MONGO_ATLAS_PW + "@cluster0.537wsyw.mongodb.net/node-angular?retryWrites=true&w=majority";
 
 mongoose.connect(uri)
     .then(() => {
@@ -39,4 +37,4 @@ app.use((req, res, next) => {
 app.use("/api/data", routes);
 app.use("/api/user", userRoutes);
 
-app.listen(7000);
+module.exports = app;

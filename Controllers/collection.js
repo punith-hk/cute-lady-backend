@@ -1,12 +1,6 @@
-const express = require("express");
-
 const collections = require('../models/collections');
 
-const checkAuth = require("../middleware/check-auth");
-
-const router = express.Router();
-
-router.post("/indian/addNew", checkAuth, (req, res, next) => {
+exports.addNewCollection = (req, res, next) => {
     const collection = new collections({
         category: req.body.category,
         type: req.body.type,
@@ -17,9 +11,9 @@ router.post("/indian/addNew", checkAuth, (req, res, next) => {
             message: "collection added succesfully"
         });
     });
-});
+}
 
-router.put("/updateCollection/:id", checkAuth, (req, res, next) => {
+exports.updateCollection = (req, res, next) => {
     const collection = new collections({
         type: req.body.type,
         title: req.body.title
@@ -28,9 +22,9 @@ router.put("/updateCollection/:id", checkAuth, (req, res, next) => {
         console.log(result);
         res.status(200).json({ message: "updated successful" });
     });
-});
+}
 
-router.get("/getDressDetails", (req, res, next) => {
+exports.getCollections = (req, res, next) => {
     const pageSize = +req.query.pageSize;
     const currentPage = +req.query.page;
     const getDetailsQuery = collections.find();
@@ -45,7 +39,7 @@ router.get("/getDressDetails", (req, res, next) => {
     getDetailsQuery
         .then(document => {
             fetchedDocuments = document;
-            return collections.countDocuments(); 
+            return collections.countDocuments();
         })
         .then(count => {
             res.status(200).json({
@@ -60,12 +54,10 @@ router.get("/getDressDetails", (req, res, next) => {
                 error: error.message
             });
         });
-});
+}
 
-router.delete("/deleteDressDetailsByID/:id", checkAuth, (req, res, next) => {
+exports.deleteCollection = (req, res, next) => {
     collections.deleteOne({ _id: req.params.id }).then(result => {
         res.status(200).json({ message: "data deleted successfully" });
     });
-});
-
-module.exports = router;
+}
